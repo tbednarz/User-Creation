@@ -8,27 +8,34 @@ const bodyParser = require('body-parser')
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json()) //allows to parse incoming json to an object
-app.use(bodyParser())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const publicDir = path.join(__dirname, "../public")
 
 app.set("view engine", "hbs")
 app.use(express.static(publicDir));
 
-app.get("", (req, res) => {
+app.get("/", (req, res) => {
   res.render("index"), {
 
   }
 })
-
+app.get("/users", (req,res) =>{
+  try {
+    const users =  User.find({users})
+    console.log(users)
+  } catch (error) {
+    res.status(500).send(e)
+  }
+})
 //request handlers!!
 //THESE ARE HOW YOU CREATE READ UPDATE AND DELETE DATA
 app.post('/users', (req,res) => {
  const user = new User(req.body)
   user.save((err, user) =>{
     if(err) return res.send("invalid inputs")
-    return res.send("User Created")
+    return res.status(200).send(user)
   })
 });
 
