@@ -1,5 +1,5 @@
 # authen-app
 
-Data authentication app using Express, Nodejs, mongodb/mongoose, validator and path
+User creation with data validation using Express, NodeJS, Mongodb/mongoose
 
 ![alt test](screenshot/authen-app-screen.PNG)
