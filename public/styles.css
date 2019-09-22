@@ -1,24 +1,36 @@
+body{
+    background: honeydew;
+}
 .form-container{
     display:grid;
     grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3,1fr);
+    justify-items: center;
     height: 100vh;
     width: 100vw;
 }
 
 .form-wrapper{
-    display: grid;
-    grid-template-rows: repeat(3,1fr);
-    background: rgb(122, 122, 122);
+    margin: auto;
+    background: rgb(90, 57, 57);
     grid-column: 2;
-    grid-row: 1/span 3;
+    text-align: center;
+    grid-row: 2;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+
 }
 form{
-    grid-row: 2;
-    align-self: center;
-    justify-self: center;
+    padding: 5px;
+    margin: 10px;
+}
+.form-wrapper h1{
+    background: honeydew;
 }
 input{
-   
+   background: honeydew;
+    border: 2px solid black;
+   font-size: 1em;
     margin: 20px;
     display: block;
     text-align: center;

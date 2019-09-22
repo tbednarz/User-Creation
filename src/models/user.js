@@ -5,7 +5,12 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    validate(value){
+      if(!validator.isAlpha(value)){
+        throw new Error("Only letters");
+      }
+    }
   },
   email: {
     type: String,
@@ -15,7 +20,7 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate(value) {
       if (!validator.isEmail(value)) {
-        throw new error("Email is invalid");
+        throw new Error("Email is invalid");
       }
     }
   }
