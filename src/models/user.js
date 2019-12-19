@@ -1,13 +1,15 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     trim: true,
-    validate(value){
-      if(!validator.isAlpha(value)){
+    validate(value) {
+      if (!validator.isAlpha(value)) {
         throw new Error("Only letters");
       }
     }
@@ -23,10 +25,43 @@ const userSchema = new mongoose.Schema({
         throw new Error("Email is invalid");
       }
     }
-  }
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 7,
+    trim: true,
+    validate(value) {
+      if (value.toLowerCase().includes("password", "12345")) {
+        throw new Error('Password cannon cotain "password" or "12345"');
+      }
+    }
+  },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true
+      }
+    }
+  ]
 });
 
+userSchema.methods.generateAuthToken = async function() {
+  const user = this;
+  const token = jwt.sign({ _id: user._id.toString() }, "cybershot");
+  await user.save();
+  return token;
+};
 
-const User = mongoose.model('User', userSchema)
+userSchema.pre("save", async function(next) {
+  const user = this;
+  if (user.isModified("password")) {
+    user.password = await bcrypt.hash(user.password, 8);
+  }
+  next();
+});
 
-module.exports = User
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
